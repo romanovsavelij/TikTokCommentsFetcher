@@ -2,3 +2,4 @@
 venv/
 geckodriver.log
 comments.csv
+.DS_Store

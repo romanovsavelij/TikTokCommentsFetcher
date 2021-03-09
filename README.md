@@ -31,7 +31,6 @@ python3 tiktok.py <input.txt
 
 
 ### Result
-CSV файл со столбцами: id, ник, ссылка на профиль, текст комментария. Дополнительно можно выводить, например, количество лайков комментария и ответы на него.
 CSV file with columns: `id`, `nickname`, `link_to_profile`, `text`, `like_count`. No headers!
 TODO: comment's answers.
 

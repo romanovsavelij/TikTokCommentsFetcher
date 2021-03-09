@@ -23,7 +23,7 @@ COMMENT_TEXT_XPATH = '//*[contains(@class, "comment-item")]/div/div/p/span'
 USER_NAME_XPATH = '//*[contains(@class, "comment-item")]/div[1]/div[1]/a/span'
 USER_LINK_XPATH = '//*[contains(@class, "comment-item")]/div[1]/div[1]/a'
 COMMENTS_XPATH = '//*[@id="main"]/div[2]/div[2]/div/div/main/div/div[1]/span[1]/div/div/div[5]/div[2]/div[2]/div'
-
+COMMENT_LIKES_XPATH = '//*[contains(@class, "comment-item")]/div/div[2]/span'
 
 def id_by_link(link: str):
     # https://www.tiktok.com/@margaritaxaibith?lang=en -> @margaritaxaibith
@@ -34,8 +34,9 @@ def fetch_data_from_comments(driver):
     comment_texts = [element.text for element in driver.find_elements(By.XPATH, COMMENT_TEXT_XPATH)]
     user_names = [element.text for element in driver.find_elements(By.XPATH, USER_NAME_XPATH)]
     user_links = [element.get_attribute('href') for element in driver.find_elements(By.XPATH, USER_LINK_XPATH)]
+    comment_likes = [element.text for element in driver.find_elements(By.XPATH, COMMENT_LIKES_XPATH)]
     user_ids = [id_by_link(link) for link in user_links]
-    return comment_texts, user_names, user_links, user_ids
+    return comment_texts, user_names, user_links, comment_likes, user_ids
 
 
 def loading_comments(driver, comments_limit):
@@ -50,10 +51,10 @@ def loading_comments(driver, comments_limit):
         # subscribe = WebDriverWait(driver, 60).until(EC.visibility_of_element_located((By.XPATH, "//yt-formatted-string[text()='Subscribe']")))
 
 
-def export_comments_to_csv(user_ids, user_names, user_links, comment_texts):
+def export_comments_to_csv(user_ids, user_names, user_links, comment_texts, comment_likes):
     with open('comments.csv', 'w') as out:
         writer = csv.writer(out)
-        for row in zip(user_ids, user_names, user_links, comment_texts):
+        for row in zip(user_ids, user_names, user_links, comment_texts, comment_likes):
             writer.writerow(row)
 
 
@@ -100,8 +101,8 @@ def parse_comments_by_link():
 
     loading_comments(driver, comments_limit)
 
-    comment_texts, user_names, user_links, user_ids = fetch_data_from_comments(driver)
-    export_comments_to_csv(user_ids, user_names, user_links, comment_texts)
+    comment_texts, user_names, user_links, comment_likes, user_ids = fetch_data_from_comments(driver)
+    export_comments_to_csv(user_ids, user_names, user_links, comment_texts, comment_likes)
     driver.quit()
 
 

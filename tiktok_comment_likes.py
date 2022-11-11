@@ -18,12 +18,11 @@ LOGIN_LINK = 'https://accounts.google.com/o/oauth2/v2/auth/identifier?client_id'
         '&scope=openid%20profile&approval_prompt=force&flowName' \
         '=GeneralOAuthFlow'
 
-PASSWORD_XPATH = '//*[@id="password"]/div[1]/div/div[1]/input'
-COMMENT_TEXT_XPATH = '//*[contains(@class, "comment-item")]/div/div/p/span'
-USER_NAME_XPATH = '//*[contains(@class, "comment-item")]/div[1]/div[1]/a/span'
-USER_LINK_XPATH = '//*[contains(@class, "comment-item")]/div[1]/div[1]/a'
-COMMENTS_XPATH = '//*[@id="main"]/div[2]/div[2]/div/div/main/div/div[1]/span[1]/div/div/div[5]/div[2]/div[2]/div'
-COMMENT_LIKES_XPATH = '//*[contains (@class, "comment-item")] / div / div[2] / span'
+COMMENT_TEXT_XPATH = '//*[contains(@class, "DivCommentItemContainer")]/div/div/p/span' 
+USER_NAME_XPATH = '//*[contains(@class, "DivCommentItemContainer")]/div[1]/div[1]/a/span' 
+USER_LINK_XPATH = '//*[contains(@class, "DivCommentItemContainer")]/div[1]/div[1]/a' 
+COMMENTS_XPATH = '//*[contains(@class, "DivCommentListContainer")]' 
+COMMENT_LIKES_XPATH = '//*[contains (@class, "DivLikeWrapper")]/span'
 
 def id_by_link(link: str):
     # https://www.tiktok.com/@margaritaxaibith?lang=en -> @margaritaxaibith
@@ -76,7 +75,7 @@ def login_with_google(driver, email, password):
     email_el.send_keys(email)
     email_el.send_keys(Keys.ENTER)
     time.sleep(2.0)
-    password_el = driver.find_element(By.XPATH, PASSWORD_XPATH)
+    password_el = driver.find_elements(By.CSS_SELECTOR,'input')
     password_el.send_keys(password)
     password_el.send_keys(Keys.ENTER)
 
